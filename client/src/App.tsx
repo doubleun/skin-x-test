@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Routes from '@/constant/routes'
-import Error from '@/pages/error/error'
+import Error from '@/pages/error/Error'
 
 import Landing from './pages/landing/Landing'
 
