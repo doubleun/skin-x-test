@@ -1,13 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Routes from '@/constant/routes'
-import ErrorPage from '@/pages/error/error'
+import Error from '@/pages/error/error'
+
+import Landing from './pages/landing/Landing'
 
 const router = createBrowserRouter([
   {
     path: Routes.Root,
-    element: <div></div>,
-    errorElement: <ErrorPage />,
+    element: <Landing />,
+    errorElement: <Error />,
   },
 ])
 
