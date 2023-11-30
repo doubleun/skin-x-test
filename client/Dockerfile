@@ -8,14 +8,17 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+# Install pnpm globally
+RUN npm install -g pnpm typescript
+
 # Install dependencies
-RUN npm install
+RUN pnpm install -P
 
 # Copy the entire application code to the container
 COPY . .
 
 # Build the React app for production
-RUN npm run build
+RUN pnpm build
 
 # Stage 2
 # Use Nginx as the production server
