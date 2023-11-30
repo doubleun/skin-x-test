@@ -68,11 +68,37 @@
 
     --radius: 0.5rem;
   }
+
+  @font-face {
+    font-family: 'IBMPlexSans'; /*Can be any text*/
+    font-style: normal;
+    font-weight: 400;
+    src: local(''), url('/fonts/IBMPlexSans-Light.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'IBMPlexSans'; /*Can be any text*/
+    font-style: normal;
+    font-weight: 500;
+    src: local(''), url('/fonts/IBMPlexSans-Medium.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'IBMPlexSans'; /*Can be any text*/
+    font-style: normal;
+    font-weight: 600;
+    src: local(''), url('/fonts/IBMPlexSans-SemiBold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'IBMPlexSans'; /*Can be any text*/
+    font-style: normal;
+    font-weight: 600;
+    src: local(''), url('/fonts/IBMPlexSans-Bold.ttf') format('truetype');
+  }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    /* apply default font */
+    @apply border-border font-IBMPlexSans;
   }
   body {
     @apply bg-background text-foreground;

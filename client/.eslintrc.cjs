@@ -57,7 +57,6 @@ module.exports = {
     ],
     'simple-import-sort/exports': 'warn',
     'prefer-const': 'error',
-    '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/no-empty-function': 'error',
   },
 }

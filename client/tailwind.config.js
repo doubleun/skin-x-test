@@ -3,7 +3,11 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
-  content: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    // 'components/**/*.{ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
@@ -55,6 +59,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        IBMPlexSans: ['IBMPlexSans', 'sans'],
       },
       keyframes: {
         'accordion-down': {
