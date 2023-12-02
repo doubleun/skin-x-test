@@ -1,6 +1,5 @@
 const Routes = {
   Root: '/',
-  Landing: '/landing',
   Login: '/login',
 }
 

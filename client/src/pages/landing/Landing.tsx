@@ -6,6 +6,8 @@ import { SortDirections } from '@/types/common.type'
 
 import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
+import Navbar from '@/components/Navbar/Navbar'
+import PageContainer from '@/components/PageContainer/PageContainer'
 import PostCard from '@/components/PostCard/PostCard'
 import {
   Select,
@@ -30,60 +32,62 @@ function Landing() {
         setSortDirection,
         handleSearchPosts,
       }) => (
-        <div className="flex flex-col gap-2">
-          {/* search */}
-          <div className="flex gap-4">
-            <Input type="text" placeholder="Search" ref={searchRef} />
-            <Button onClick={handleSearchPosts}>Search</Button>
-          </div>
+        <PageContainer header={<Navbar />} className="bg-slate-50">
+          <div className="flex flex-col gap-2 pt-4">
+            {/* search */}
+            <div className="flex gap-4">
+              <Input type="text" placeholder="Search" ref={searchRef} />
+              <Button onClick={handleSearchPosts}>Search</Button>
+            </div>
 
-          {/* sort */}
-          <div className="flex items-center gap-4">
-            <FilterIcon />
-            {/* sort by */}
-            <Select
-              onValueChange={(val) =>
-                setSortBy(val as Exclude<keyof IPost, 'tags'>)
-              }
-              defaultValue={sortBy}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Sort By" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="title">Title</SelectItem>
-                  <SelectItem value="content">Content</SelectItem>
-                  <SelectItem value="postedAt">Posted At</SelectItem>
-                  <SelectItem value="postedBy">Posted By</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            {/* sort */}
+            <div className="flex items-center gap-4">
+              <FilterIcon />
+              {/* sort by */}
+              <Select
+                onValueChange={(val) =>
+                  setSortBy(val as Exclude<keyof IPost, 'tags'>)
+                }
+                defaultValue={sortBy}
+              >
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Sort By" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="title">Title</SelectItem>
+                    <SelectItem value="content">Content</SelectItem>
+                    <SelectItem value="postedAt">Posted At</SelectItem>
+                    <SelectItem value="postedBy">Posted By</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
 
-            {/* sort direction */}
-            <Select
-              onValueChange={(val) => setSortDirection(val as SortDirections)}
-              defaultValue={sortDirection}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Direction" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="ASC">Ascending</SelectItem>
-                  <SelectItem value="DESC">Descending</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+              {/* sort direction */}
+              <Select
+                onValueChange={(val) => setSortDirection(val as SortDirections)}
+                defaultValue={sortDirection}
+              >
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Direction" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="ASC">Ascending</SelectItem>
+                    <SelectItem value="DESC">Descending</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* posts */}
-          <div className="flex flex-col gap-8">
-            {posts?.map((post) => (
-              <PostCard post={post} key={uuidv4()} />
-            ))}
+            {/* posts */}
+            <div className="flex flex-col gap-8">
+              {posts?.map((post) => (
+                <PostCard post={post} key={uuidv4()} />
+              ))}
+            </div>
           </div>
-        </div>
+        </PageContainer>
       )}
     />
   )

@@ -1,25 +1,25 @@
-import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+// import { useEffect } from 'react'
+// import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import PageContainer from '@/components/PageContainer/PageContainer'
+// import PageContainer from '@/components/PageContainer/PageContainer'
 
-function Root() {
-  const navigate = useNavigate()
-  const location = useLocation()
+// function Root() {
+//   const navigate = useNavigate()
+//   const location = useLocation()
 
-  // todo: handle auth
-  useEffect(() => {
-    if (location.pathname === '/') {
-      navigate('/landing')
-    }
-  }, [])
+//   // todo: handle auth
+//   useEffect(() => {
+//     if (location.pathname === '/') {
+//       navigate('/landing')
+//     }
+//   }, [])
 
-  return (
-    <PageContainer className="pt-4 bg-slate-50">
-      {/* todo: nav ?? */}
-      <Outlet />
-    </PageContainer>
-  )
-}
+//   return (
 
-export default Root
+//       {/* todo: nav ?? */}
+//       <Outlet />
+//     </PageContainer>
+//   )
+// }
+
+// export default Root

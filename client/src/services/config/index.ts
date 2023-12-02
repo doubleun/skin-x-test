@@ -17,8 +17,8 @@ export const request = axios.create({
  */
 export const APIEndpoints = {
   POST: '/post',
-  REGISTER: '/register',
-  LOGIN: '/login',
-  LOGOUT: '/logout',
-  REFRESH: '/refresh',
+  REGISTER: '/user/register',
+  LOGIN: '/user/login',
+  LOGOUT: '/user/logout',
+  REFRESH: '/user/refresh',
 }

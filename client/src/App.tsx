@@ -3,18 +3,19 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Routes from '@/constant/routes'
 import Error from '@/pages/error/Error'
 
+import AuthProvider from './components/AuthProvider/AuthProvider'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './pages/landing/Landing'
 import Login from './pages/login/Login'
-import Root from './pages/root/Root'
 
 // todo: implement navbar for loggin out ?
 const router = createBrowserRouter([
   {
     path: Routes.Root,
-    element: <Root />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: Routes.Landing,
+        path: Routes.Root,
         element: <Landing />,
         errorElement: <Error />,
       },
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  )
 }
 
 export default App
