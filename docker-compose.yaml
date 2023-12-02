@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - 5431:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=skinx
+      - POSTGRES_DB=db
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+
+  # api:
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3003:3003
+  #   volumes:
+  #     - ./api:/api/dev # for dev
+  #   environment:
+  #     - PORT=3003
+  #     - MONGO_URI=mongodb://mongodb:27017/blue-pi-vending
+  #   depends_on:
+  #     - mongodb
+  #   networks:
+  #     - vending-network
+
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - NEXT_PUBLIC_API_BASE_URL=http://localhost:3003
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./client:/client/dev # for dev
+  #   networks:
+  #     - vending-network
+
+networks:
+  skinx-network:
+    driver: bridge

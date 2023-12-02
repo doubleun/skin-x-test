@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "install:api": "pnpm -F api install",
+    "install:client": "pnpm -F client install",
+    "dev": "pnpm -r --parallel run dev",
     "dev:api": "pnpm -F api dev",
     "dev:client": "pnpm -F client dev"
   },

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/db'
+import Post from './Post'
 
 class Tag extends Model {
   declare key: string
@@ -16,6 +17,8 @@ Tag.init(
   {
     sequelize,
     modelName: 'Tag',
+    createdAt: false,
+    updatedAt: false,
   }
 )
 

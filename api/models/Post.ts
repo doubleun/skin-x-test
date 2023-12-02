@@ -3,12 +3,12 @@ import sequelize from '../config/db'
 import Tag from './Tag'
 
 class Post extends Model {
+  declare addTags: any
   declare id: number
   declare title: string
   declare content: string
   declare postedAt: string
   declare postedBy: string
-  declare tags: (typeof Tag)['primaryKeyAttribute'][]
 }
 
 Post.init(
@@ -19,11 +19,11 @@ Post.init(
       primaryKey: true,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
       allowNull: false,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
       allowNull: false,
     },
     postedAt: {
@@ -31,23 +31,15 @@ Post.init(
       allowNull: false,
     },
     postedBy: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
-    },
-    // todo: check if tags table is needed (one to many), or should just put in as array of string
-    tags: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      references: {
-        // This is a reference to another model
-        model: Tag,
-        // This is the column name of the referenced model
-        key: 'key',
-      },
     },
   },
   {
     sequelize,
-    modelName: 'User',
+    modelName: 'Post',
+    createdAt: false,
+    updatedAt: false,
   }
 )
 

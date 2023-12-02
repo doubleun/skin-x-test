@@ -27,6 +27,8 @@ User.init(
   {
     sequelize,
     modelName: 'User',
+    createdAt: false,
+    updatedAt: false,
   }
 )
 
