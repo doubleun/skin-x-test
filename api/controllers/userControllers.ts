@@ -1,8 +1,13 @@
 import { Request, Response } from 'express'
 
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
+import {
+  JWT_SECRET,
+  JWT_ACCESS_EXPIRATION,
+  JWT_REFRESH_EXPIRATION,
+} from '../constants/jwt'
 import User from '../models/User'
 
 /**
@@ -53,17 +58,78 @@ export const signInUser = async (req: Request, res: Response) => {
     }
 
     // Authenticate user with jwt
-    const JWT_SECRET = process.env.JWT_SECRET || 'random' // note: fixed fallback is security issue, but for this simple project this will do
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, {
-      expiresIn: process.env.JWT_REFRESH_EXPIRATION,
+
+    // sign access token
+    const accessToken = jwt.sign({ id: user.id }, JWT_SECRET, {
+      expiresIn: JWT_ACCESS_EXPIRATION,
     })
 
-    res.status(200).send({
-      id: user.id,
-      username,
-      accessToken: token,
+    // sign refresh token
+    const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, {
+      expiresIn: JWT_REFRESH_EXPIRATION,
     })
+
+    res
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      .header('Authorization', accessToken)
+      .json({
+        id: user.id,
+        username: user.username,
+      })
   } catch (err) {
     return res.status(500).send('Sign in error')
   }
+}
+
+/**
+ * POST - refresh token
+ * @description refresh token
+ */
+export const refreshToken = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies?.['refreshToken']
+
+  if (!refreshToken) {
+    return res.status(401).send('Access Denied. No refresh token provided.')
+  }
+
+  try {
+    const JWT_SECRET = process.env.JWT_SECRET || 'random'
+
+    const decoded = jwt.verify(refreshToken, JWT_SECRET) as JwtPayload
+
+    if (!decoded?.id) {
+      throw new Error('Failed to decode the token')
+    }
+
+    // sign new access token
+    const accessToken = jwt.sign({ id: decoded.id }, JWT_SECRET, {
+      expiresIn: JWT_ACCESS_EXPIRATION,
+    })
+
+    res.header('Authorization', accessToken).send(decoded.user)
+  } catch (error) {
+    let errorMsg = 'Invalid refresh token.'
+
+    if (error instanceof Error) {
+      errorMsg = error.message
+    }
+
+    return res.status(400).send(error)
+  }
+}
+
+/**
+ * GET - logout
+ * @description sign out user
+ */
+export const signOutUser = (req: Request, res: Response) => {
+  res.removeHeader('Authorization')
+
+  return res
+    .clearCookie('refreshToken')
+    .status(200)
+    .json({ message: 'Successfully logged out' })
 }

@@ -2,6 +2,8 @@ import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import sequelize from '../config/db'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
 import userRoutes from '../routes/userRoutes'
 import Post from '../models/Post'
 import Tag from '../models/Tag'
@@ -46,6 +48,9 @@ Tag.belongsToMany(Post, {
 const app: Express = express()
 
 app.use(cors())
+
+// parse http-only cookie for authorization (JWT)
+app.use(cookieParser())
 
 // parse requests of content-type - application/json
 app.use(express.json())
