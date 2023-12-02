@@ -15,7 +15,7 @@ function Root() {
   }, [])
 
   return (
-    <PageContainer className="pt-4">
+    <PageContainer className="pt-4 bg-slate-50">
       {/* todo: nav ?? */}
       <Outlet />
     </PageContainer>
