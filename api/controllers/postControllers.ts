@@ -41,19 +41,11 @@ export const createPost = async (req: Request, res: Response) => {
  */
 export const searchPosts = async (req: Request, res: Response) => {
   try {
-    const { search, sort, direction } = req.query ?? {
-      search: '',
-      sort: 'id',
-      direction: 'ASC',
-    }
+    const { search = '', sort = 'title', direction = 'ASC' } = req.query
 
     // if (!search) res.status(500).send('Missing search query')
 
-    if (
-      !Post.sequelize ||
-      (direction as string) !== 'ASC' ||
-      direction !== 'DESC'
-    ) {
+    if (!Post.sequelize) {
       res.status(500).send('Something went wrong with the api server')
       return
     }

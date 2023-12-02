@@ -12,22 +12,27 @@ services:
       - POSTGRES_DB=db
     volumes:
       - ~/apps/postgres:/var/lib/postgresql/data
+    networks:
+      - skinx-network
 
-  # api:
-  #   build:
-  #     context: ./api
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3003:3003
-  #   volumes:
-  #     - ./api:/api/dev # for dev
-  #   environment:
-  #     - PORT=3003
-  #     - MONGO_URI=mongodb://mongodb:27017/blue-pi-vending
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - vending-network
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 3003:3003
+    volumes:
+      - ./api:/api/dev # for dev
+    environment:
+      - PORT=3003
+      - DB_URI=postgresql://skinx:password@postgres:5432/db
+      - JWT_SECRET=2myTS9PX7CeytEYl/sNqufeoO6O69dTN+5OR1q6/ag7tCrvk4+wEgf7xuNX5xnJuNAvxlmxQoF/XQrHnNisXOVe6Y61+nSBltmMjymYlccWuwJrFa749HzgWttwhaOUHbrQu43LyVcWhzVNOzb64HgxIVD3weFkdmw/AcyAl2y0R0Jsb/7vdu7bu8M8PLkA8YCm+L7UroNTcLQO4WtRYrHc6K+jzgD5HXvkOC0sc3/PDtPYf3fBtWlLUYng/qxJNxEhUFClqXa6yzekCbzpBo0deF/ttTY4SMsFjsMS2bTV0H8wgkptXVPmjmV1xJp0Ze+55gzg8AOudzpbSkNhx/A==
+      - JWT_ACCESS_EXPIRATION=1h
+      - JWT_REFRESH_EXPIRATION=7d
+    depends_on:
+      - postgres
+    networks:
+      - skinx-network
 
   # client:
   #   build:

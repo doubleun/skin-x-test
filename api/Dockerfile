@@ -10,7 +10,7 @@ RUN npm install -g pnpm typescript
 COPY . .
 
 # Install all dependencies using pnpm
-RUN pnpm install -P
+RUN pnpm install
 
 RUN pnpm build
 
