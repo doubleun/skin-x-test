@@ -21,6 +21,18 @@ function LandingContainer({ render }: LandingContainerProps) {
     )
   }
 
+  // search when pressed enter
+  const handleKeyPress = ({ key }: { key: string }) => {
+    if (key === 'Enter') {
+      handleSearchPosts()
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keypress', handleKeyPress)
+    return () => window.removeEventListener('keypress', handleKeyPress)
+  }, [])
+
   useEffect(() => {
     if (!didMount.current) {
       didMount.current = true

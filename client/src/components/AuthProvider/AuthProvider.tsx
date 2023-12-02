@@ -10,6 +10,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   // for sets the authorization header in axios and localStorage.
   useEffect(() => {
+    console.log('tolkk', token)
     if (token) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
       localStorage.setItem('token', token)

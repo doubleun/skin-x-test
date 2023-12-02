@@ -14,7 +14,7 @@ function Login() {
             <div className={LoginTwClass.inputCard}>
               <h3 className="flex justify-center text-3xl ">Login</h3>
               <Input ref={usernameRef} type="text" placeholder="username" />
-              <Input ref={passwordRef} type="text" placeholder="password" />
+              <Input ref={passwordRef} type="password" placeholder="password" />
               <Button onClick={onSubmitLogin}>Confirm</Button>
             </div>
           </div>

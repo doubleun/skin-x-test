@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/useAuth'
-import logout from '@/services/auth/logout'
+import authLogout from '@/services/auth/authLogout'
 
 import { Button } from '@/components/Button/Button'
 
@@ -8,7 +8,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     // this will remove auth from header and token in cookie
-    const loggedOut = await logout()
+    const loggedOut = await authLogout()
     if (loggedOut) {
       setToken(null)
     }

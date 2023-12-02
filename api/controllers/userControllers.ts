@@ -78,6 +78,7 @@ export const signInUser = async (req: Request, res: Response) => {
       .json({
         id: user.id,
         username: user.username,
+        token: accessToken,
       })
   } catch (err) {
     return res.status(500).send('Sign in error')

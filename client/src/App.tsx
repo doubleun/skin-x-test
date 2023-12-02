@@ -8,7 +8,6 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './pages/landing/Landing'
 import Login from './pages/login/Login'
 
-// todo: implement navbar for loggin out ?
 const router = createBrowserRouter([
   {
     path: Routes.Root,

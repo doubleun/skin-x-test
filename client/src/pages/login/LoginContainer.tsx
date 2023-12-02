@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '@/hooks/useAuth'
+import authLogin from '@/services/auth/authLogin'
 
 import { LoginContainerProps } from './Login.type'
 
@@ -13,7 +14,7 @@ function LoginContainer({ render }: LoginContainerProps) {
   const passwordRef = useRef<HTMLInputElement>(null)
 
   // onSubmit login
-  const handleSubmitLogin = () => {
+  const handleSubmitLogin = async () => {
     const username = usernameRef.current?.value
     const password = passwordRef.current?.value
 
@@ -22,10 +23,25 @@ function LoginContainer({ render }: LoginContainerProps) {
       return
     }
 
-    console.log(`login\nusername: ${username}\npassword: ${password}`)
-    setToken('asd')
+    const user = await authLogin(username, password)
+    if (!user || !user?.token) return
+
+    setToken(user.token)
     navigate('/', { replace: true })
   }
+
+  // login when press enter
+  const handleKeyPress = ({ key }: { key: string }) => {
+    if (key === 'Enter') {
+      handleSubmitLogin()
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keypress', handleKeyPress)
+
+    return () => window.removeEventListener('keypress', handleKeyPress)
+  }, [])
 
   return render({ usernameRef, passwordRef, onSubmitLogin: handleSubmitLogin })
 }

@@ -1,6 +1,6 @@
 import { APIEndpoints, request } from '@/services/config'
 
-const logout = async (): Promise<boolean> => {
+const authLogout = async (): Promise<boolean> => {
   try {
     await request.get(APIEndpoints.LOGOUT)
 
@@ -11,4 +11,4 @@ const logout = async (): Promise<boolean> => {
   }
 }
 
-export default logout
+export default authLogout
