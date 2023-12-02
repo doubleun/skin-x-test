@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
-import { QueryTypes } from 'sequelize'
+import { Op, QueryTypes, Sequelize } from 'sequelize'
 
 import Post from '../models/Post'
+import PostTag from '../models/PostTag'
+import Tag from '../models/Tag'
 
 /**
  * POST - create post
@@ -39,16 +41,48 @@ export const createPost = async (req: Request, res: Response) => {
  */
 export const searchPosts = async (req: Request, res: Response) => {
   try {
-    const { search } = req.query ?? { search: '' }
+    const { search, sort, direction } = req.query ?? {
+      search: '',
+      sort: 'id',
+      direction: 'ASC',
+    }
 
     // if (!search) res.status(500).send('Missing search query')
 
-    if (!Post.sequelize) {
+    if (
+      !Post.sequelize ||
+      (direction as string) !== 'ASC' ||
+      direction !== 'DESC'
+    ) {
       res.status(500).send('Something went wrong with the api server')
       return
     }
 
-    // Check if the email exists
+    // const searchedPosts = await Post.findAll({
+    //   attributes: ['id', 'title', 'content', 'postedAt', 'postedBy'],
+    //   where: {
+    //     id: ,
+    //   },
+    //   include: [
+    //     {
+    //       model: Tag,
+    //       as: 'tags',
+    //       required: false,
+    //       attributes: [
+    //         'key',
+    //         // [Post.sequelize.fn('ARRAY_AGG', Post.sequelize.col('key')), 'tags'],
+    //       ],
+    //     },
+    //   ],
+    //   order: ['title'],
+    //   group: [
+    //     'Post.id',
+    //     'tags.key',
+    //     'tags->Post_Tag.post_id',
+    //     'tags->Post_Tag.tag_id',
+    //   ],
+    // })
+
     const searchedPosts = await Post.sequelize.query(
       `
       SELECT
@@ -63,15 +97,20 @@ export const searchPosts = async (req: Request, res: Response) => {
       LEFT JOIN
         "Post_Tag" pt ON pt.post_id = p.id
       WHERE
-        p.title LIKE :search_text OR p.id IN (
+        p.title LIKE $search_text OR p.id IN (
           SELECT post_id
           FROM "Post_Tag"
-          WHERE tag_id LIKE :search_text
+          WHERE tag_id LIKE $search_text
         )
       GROUP BY
-        p.id;
+        p.id
+      ORDER BY
+        ${Post.sequelize.literal(`p."${sort}" ${direction}`).val};
     `,
-      { replacements: { search_text: `%${search}%` }, type: QueryTypes.SELECT }
+      {
+        bind: { search_text: `%${search}%` },
+        type: QueryTypes.SELECT,
+      }
     )
 
     return res.status(200).json(searchedPosts)

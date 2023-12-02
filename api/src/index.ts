@@ -8,6 +8,7 @@ import userRoutes from '../routes/userRoutes'
 import Post from '../models/Post'
 import Tag from '../models/Tag'
 import postRoutes from '../routes/postRoutes'
+import PostTag from '../models/PostTag'
 
 dotenv.config()
 
