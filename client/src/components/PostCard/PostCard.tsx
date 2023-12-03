@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { Clock3Icon, User2Icon } from 'lucide-react'
+import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 
 import Routes from '@/constant/routes'
@@ -7,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { IPost } from '@/services/post'
 
 import { Button } from '@/components/Button/Button'
+import PostTag from '@/components/PostTag/PostTag'
 
 import { PostCardTwClass } from './PostCard.style'
 import { PostCardProps } from './PostCard.type'
@@ -25,6 +27,13 @@ function PostCard({ post, className }: PostCardProps) {
         dangerouslySetInnerHTML={{ __html: post.content }}
         className="max-h-[100px] overflow-hidden [&>p]:overflow-hidden [&>p]:whitespace-nowrap [&>p]:text-ellipsis"
       />
+
+      {/* post tags */}
+      <div className="flex gap-2">
+        {post.tags.map((tag) => (
+          <PostTag key={uuidv4()}>{tag}</PostTag>
+        ))}
+      </div>
 
       {/* posted at, by, and continue button */}
       <div className="flex justify-between">
