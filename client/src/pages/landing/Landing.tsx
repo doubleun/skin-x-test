@@ -6,6 +6,7 @@ import { SortDirections } from '@/types/common.type'
 
 import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
+import Loader from '@/components/Loader/Loader'
 import Navbar from '@/components/Navbar/Navbar'
 import PageContainer from '@/components/PageContainer/PageContainer'
 import PostCard from '@/components/PostCard/PostCard'
@@ -25,6 +26,7 @@ function Landing() {
     <LandingContainer
       render={({
         posts,
+        loading,
         searchRef,
         sortBy,
         setSortBy,
@@ -81,11 +83,15 @@ function Landing() {
             </div>
 
             {/* posts */}
-            <div className="flex flex-col gap-8">
-              {posts?.map((post) => (
-                <PostCard post={post} key={uuidv4()} />
-              ))}
-            </div>
+            {loading ? (
+              <Loader className="w-[10%] h-auto m-16" />
+            ) : (
+              <div className="flex flex-col gap-8">
+                {posts?.map((post) => (
+                  <PostCard post={post} key={uuidv4()} />
+                ))}
+              </div>
+            )}
           </div>
         </PageContainer>
       )}

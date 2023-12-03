@@ -7,6 +7,7 @@ import { SortDirections } from '@/types/common.type'
 import { LandingContainerProps } from './Landing.type'
 
 function LandingContainer({ render }: LandingContainerProps) {
+  const [loading, setLoading] = useState<boolean>(false)
   const [posts, setPosts] = useState<IPost[] | undefined>([])
   const [sortBy, setSortBy] = useState<Exclude<keyof IPost, 'tags'>>('postedAt')
   const [sortDirection, setSortDirection] = useState<SortDirections>('ASC')
@@ -16,9 +17,16 @@ function LandingContainer({ render }: LandingContainerProps) {
   const handleSearchPosts = async () => {
     const search = searchRef.current?.value ?? ''
 
-    await searchPost(search, sortBy, sortDirection).then((searchResults) =>
-      setPosts(searchResults)
-    )
+    try {
+      setLoading(true)
+      await searchPost(search, sortBy, sortDirection).then((searchResults) =>
+        setPosts(searchResults)
+      )
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
   }
 
   // search when pressed enter
@@ -44,6 +52,7 @@ function LandingContainer({ render }: LandingContainerProps) {
 
   return render({
     posts,
+    loading,
     searchRef,
     sortBy,
     setSortBy,

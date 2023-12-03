@@ -3,6 +3,7 @@ import { ContainerRenderProps, SortDirections } from '@/types/common.type'
 
 interface LandingContainerRenderProps {
   posts: IPost[] | undefined
+  loading: boolean
   searchRef: React.RefObject<HTMLInputElement>
   sortBy: string
   setSortBy: React.Dispatch<React.SetStateAction<Exclude<keyof IPost, 'tags'>>>
