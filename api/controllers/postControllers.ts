@@ -70,31 +70,6 @@ export const searchPosts = async (req: Request, res: Response) => {
     // cleaned order by query
     const orderByQuery = Post.sequelize.literal(`p."${sort}" ${direction}`).val
 
-    // const searchedPosts = await Post.findAll({
-    //   attributes: ['id', 'title', 'content', 'postedAt', 'postedBy'],
-    //   where: {
-    //     id: ,
-    //   },
-    //   include: [
-    //     {
-    //       model: Tag,
-    //       as: 'tags',
-    //       required: false,
-    //       attributes: [
-    //         'key',
-    //         // [Post.sequelize.fn('ARRAY_AGG', Post.sequelize.col('key')), 'tags'],
-    //       ],
-    //     },
-    //   ],
-    //   order: ['title'],
-    //   group: [
-    //     'Post.id',
-    //     'tags.key',
-    //     'tags->Post_Tag.post_id',
-    //     'tags->Post_Tag.tag_id',
-    //   ],
-    // })
-
     const searchedPosts = (await Post.sequelize.query(
       `
       SELECT
