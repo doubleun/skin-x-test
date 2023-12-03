@@ -2,6 +2,16 @@
 
 ## How to run the project
 
+### Docker compose
+
+#### Run project with docker-compose (all in one)
+
+- In the root project run:
+
+  ```bash
+  $ docker-compose up -d
+  ```
+
 ### Development
 
 #### Install dependencies
@@ -72,13 +82,3 @@
     $ pg_dump db > dump.sql -h localhost -p 5431 -U skinx
     ```
   -
-
-### Docker-compose
-
-#### Run project with docker-compose (all in one)
-
-- In the root project run:
-
-  ```bash
-  $ docker-compose up -d
-  ```
