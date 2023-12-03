@@ -9,6 +9,7 @@ class Post extends Model {
   declare content: string
   declare postedAt: string
   declare postedBy: string
+  declare tags: Record<any, any>[] | string[]
 }
 
 Post.init(
@@ -44,3 +45,12 @@ Post.init(
 )
 
 export default Post
+
+export interface SearchedPosts {
+  id: number
+  title: string
+  content: string
+  postedAt: string
+  postedBy: string
+  total: number
+}

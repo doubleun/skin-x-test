@@ -1,7 +1,9 @@
 import { IPost } from '@/services/post'
 import { ContainerRenderProps, SortDirections } from '@/types/common.type'
 
-interface LandingContainerRenderProps {
+import { PaginationProps } from '@/components/Pagination/Pagination.type'
+
+interface LandingContainerRenderProps extends PaginationProps {
   posts: IPost[] | undefined
   loading: boolean
   searchRef: React.RefObject<HTMLInputElement>

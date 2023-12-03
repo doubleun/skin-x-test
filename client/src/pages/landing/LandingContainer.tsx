@@ -11,6 +11,8 @@ function LandingContainer({ render }: LandingContainerProps) {
   const [posts, setPosts] = useState<IPost[] | undefined>([])
   const [sortBy, setSortBy] = useState<Exclude<keyof IPost, 'tags'>>('postedAt')
   const [sortDirection, setSortDirection] = useState<SortDirections>('ASC')
+  const [page, setPage] = useState<number>(1)
+  const [totalPage, setTotalPage] = useState<number | undefined>(1)
   const searchRef = useRef<HTMLInputElement>(null)
   const didMount = useRef<boolean>(false)
 
@@ -19,8 +21,13 @@ function LandingContainer({ render }: LandingContainerProps) {
 
     try {
       setLoading(true)
-      await searchPost(search, sortBy, sortDirection).then((searchResults) =>
-        setPosts(searchResults)
+      console.log('sortDirection', sortDirection)
+      await searchPost(search, sortBy, sortDirection, page).then(
+        (searchResults) => {
+          setPosts(searchResults?.posts)
+          setTotalPage(searchResults?.totalPage)
+          if (searchResults?.totalPage !== totalPage) setPage(1)
+        }
       )
     } catch (e) {
       console.error(e)
@@ -39,7 +46,7 @@ function LandingContainer({ render }: LandingContainerProps) {
   useEffect(() => {
     window.addEventListener('keypress', handleKeyPress)
     return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [])
+  }, [sortBy, sortDirection])
 
   useEffect(() => {
     if (!didMount.current) {
@@ -48,10 +55,25 @@ function LandingContainer({ render }: LandingContainerProps) {
     }
 
     handleSearchPosts()
-  }, [sortBy, sortDirection])
+  }, [sortBy, sortDirection, page])
+
+  const handlePageChange = (direction: 'next' | 'prev') => {
+    if (direction === 'next') {
+      setPage((prev) => {
+        return prev + 1
+      })
+    } else {
+      setPage((prev) => prev - 1)
+    }
+    return
+  }
 
   return render({
     posts,
+    page,
+    setPage,
+    onPageChange: handlePageChange,
+    totalPage,
     loading,
     searchRef,
     sortBy,

@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-import { Clock3Icon, User2Icon } from 'lucide-react'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { IPost } from '@/services/post'
 
 import { Button } from '@/components/Button/Button'
+import PostedBy from '@/components/PostedBy/PostedBy'
 import PostTag from '@/components/PostTag/PostTag'
 
 import { PostCardTwClass } from './PostCard.style'
@@ -37,21 +36,7 @@ function PostCard({ post, className }: PostCardProps) {
 
       {/* posted at, by, and continue button */}
       <div className="flex justify-between">
-        <div className="flex gap-4">
-          {/* posted at */}
-          <div className="flex items-center gap-2">
-            <Clock3Icon size={20} />
-            <p className="text-sm">
-              Posted At: {dayjs(post.postedAt).format('DD-MM-YYYY')}
-            </p>
-          </div>
-
-          {/* posted by */}
-          <div className="flex items-center gap-2">
-            <User2Icon size={20} />
-            <p className="text-sm">Posted By: {post.postedBy}</p>
-          </div>
-        </div>
+        <PostedBy post={post} />
 
         {/* continue reading button */}
         <Button size="sm" onClick={() => handleNavigateToDetail(post.id)}>

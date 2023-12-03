@@ -9,6 +9,7 @@ import { Input } from '@/components/Input/Input'
 import Loader from '@/components/Loader/Loader'
 import Navbar from '@/components/Navbar/Navbar'
 import PageContainer from '@/components/PageContainer/PageContainer'
+import Pagination from '@/components/Pagination/Pagination'
 import PostCard from '@/components/PostCard/PostCard'
 import {
   Select,
@@ -26,6 +27,10 @@ function Landing() {
     <LandingContainer
       render={({
         posts,
+        page,
+        setPage,
+        onPageChange,
+        totalPage,
         loading,
         searchRef,
         sortBy,
@@ -35,7 +40,7 @@ function Landing() {
         handleSearchPosts,
       }) => (
         <PageContainer header={<Navbar />} className="bg-slate-50">
-          <div className="flex flex-col gap-2 pt-4">
+          <div className="flex flex-col gap-2 py-4">
             {/* search */}
             <div className="flex gap-4">
               <Input type="text" placeholder="Search" ref={searchRef} />
@@ -86,11 +91,21 @@ function Landing() {
             {loading ? (
               <Loader className="w-[10%] h-auto m-16" />
             ) : (
-              <div className="flex flex-col gap-8">
-                {posts?.map((post) => (
-                  <PostCard post={post} key={uuidv4()} />
-                ))}
-              </div>
+              <>
+                <div className="flex flex-col gap-8">
+                  {posts?.map((post) => (
+                    <PostCard post={post} key={uuidv4()} />
+                  ))}
+                </div>
+
+                {/* pagination */}
+                <Pagination
+                  page={page}
+                  setPage={setPage}
+                  onPageChange={onPageChange}
+                  totalPage={totalPage}
+                />
+              </>
             )}
           </div>
         </PageContainer>

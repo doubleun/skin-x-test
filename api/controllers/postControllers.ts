@@ -1,10 +1,14 @@
 import { Request, Response } from 'express'
 import { Op, QueryTypes, Sequelize } from 'sequelize'
 
-import Post from '../models/Post'
+import Post, { SearchedPosts } from '../models/Post'
 import PostTag from '../models/PostTag'
 import Tag from '../models/Tag'
-import { isValidSortBy, isValidSortDirection } from '../utils/post.util'
+import {
+  handlePagination,
+  isValidSortBy,
+  isValidSortDirection,
+} from '../utils/post.util'
 
 /**
  * POST - create post
@@ -42,7 +46,12 @@ export const createPost = async (req: Request, res: Response) => {
  */
 export const searchPosts = async (req: Request, res: Response) => {
   try {
-    const { search = '', sort = 'title', direction = 'ASC' } = req.query
+    const {
+      search = '',
+      sort = 'title',
+      direction = 'ASC',
+      page = 1,
+    } = req.query
 
     if (!Post.sequelize) {
       res.status(500).send('Something went wrong with the api server')
@@ -86,7 +95,7 @@ export const searchPosts = async (req: Request, res: Response) => {
     //   ],
     // })
 
-    const searchedPosts = await Post.sequelize.query(
+    const searchedPosts = (await Post.sequelize.query(
       `
       SELECT
         p.id,
@@ -94,7 +103,8 @@ export const searchPosts = async (req: Request, res: Response) => {
         p.content,
         p."postedAt",
         p."postedBy",
-        ARRAY_REMOVE( ARRAY_AGG(pt.tag_id), NULL ) AS tags
+        ARRAY_REMOVE( ARRAY_AGG(pt.tag_id), NULL ) AS tags,
+        COUNT(p.id) OVER () AS total
       FROM
         public."Posts" p
       LEFT JOIN
@@ -108,17 +118,62 @@ export const searchPosts = async (req: Request, res: Response) => {
       GROUP BY
         p.id
       ORDER BY
-        ${orderByQuery};
+        ${orderByQuery}
+      ${handlePagination(Number(page))};
     `,
       {
         bind: { search_text: `%${search}%` },
         type: QueryTypes.SELECT,
       }
-    )
+    )) as SearchedPosts[]
 
-    return res.status(200).json(searchedPosts)
+    return res
+      .status(200)
+      .json({
+        posts: searchedPosts,
+        totalPage: Math.ceil(searchedPosts[0].total / 10),
+      })
   } catch (err) {
     console.error(err)
     return res.status(500).send('Something went wrong while searching posts')
+  }
+}
+
+/**
+ * GET - get post by id
+ * @description get post detail using post id
+ */
+export const getPostById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.query
+    const post = await Post.findOne({
+      where: {
+        id,
+      },
+      include: {
+        model: Tag,
+        as: 'tags',
+        required: false,
+      },
+    })
+
+    if (!post) {
+      return res.status(200).json({})
+    }
+
+    // tags will return as array of object, so we'll clean it before sending back
+    const postCleanTags = post.tags.map((tag) => {
+      if (typeof tag !== 'string') {
+        return tag.key
+      }
+      return tag
+    })
+
+    return res.status(200).json({ ...post.dataValues, tags: postCleanTags })
+  } catch (err) {
+    console.error(err)
+    return res
+      .status(500)
+      .send('Something went wrong while getting post detail')
   }
 }

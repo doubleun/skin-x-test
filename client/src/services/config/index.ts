@@ -17,6 +17,7 @@ export const request = axios.create({
  */
 export const APIEndpoints = {
   POST: '/post',
+  POST_DETAIL: '/post/detail',
   REGISTER: '/user/register',
   LOGIN: '/user/login',
   LOGOUT: '/user/logout',

@@ -5,4 +5,10 @@ export interface IPost {
   postedAt: string
   postedBy: string
   tags: string[]
+  total: number
+}
+
+export interface IPostResponse {
+  posts: IPost[]
+  totalPage: number
 }

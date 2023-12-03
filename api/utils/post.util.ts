@@ -16,3 +16,12 @@ export function isValidSortDirection(direction: string) {
 
   return false
 }
+
+export function handlePagination(page: number) {
+  const limit = 10
+
+  // if page came in as NaN then return first page
+  if (!page || typeof page !== 'number') return 'OFFSET 0 LIMIT 10'
+
+  return `OFFSET ${(page - 1) * limit} LIMIT ${limit}`
+}
