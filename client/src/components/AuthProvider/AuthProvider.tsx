@@ -7,6 +7,9 @@ export const AuthContext = createContext({})
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState(localStorage.getItem('token'))
+  const storageToken = localStorage.getItem('token')
+
+  if (token !== storageToken) setToken(storageToken)
 
   // for sets the authorization header in axios and localStorage.
   useEffect(() => {

@@ -127,12 +127,11 @@ export const searchPosts = async (req: Request, res: Response) => {
       }
     )) as SearchedPosts[]
 
-    return res
-      .status(200)
-      .json({
-        posts: searchedPosts,
-        totalPage: Math.ceil(searchedPosts[0].total / 10),
-      })
+    return res.status(200).json({
+      posts: searchedPosts,
+      totalPage:
+        searchedPosts?.length > 1 ? Math.ceil(searchedPosts[0].total / 10) : 1,
+    })
   } catch (err) {
     console.error(err)
     return res.status(500).send('Something went wrong while searching posts')

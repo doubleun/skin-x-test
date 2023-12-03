@@ -60,20 +60,17 @@ export const signInUser = async (req: Request, res: Response) => {
     // Authenticate user with jwt
 
     // sign access token
-    const accessToken = jwt.sign({ id: user.id }, JWT_SECRET, {
+    const accessToken = jwt.sign({ id: user.id, user: username }, JWT_SECRET, {
       expiresIn: JWT_ACCESS_EXPIRATION,
     })
 
     // sign refresh token
-    const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, {
+    const refreshToken = jwt.sign({ id: user.id, user: username }, JWT_SECRET, {
       expiresIn: JWT_REFRESH_EXPIRATION,
     })
 
     res
-      .cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'strict',
-      })
+      .cookie('refreshToken', refreshToken)
       .header('Authorization', accessToken)
       .json({
         id: user.id,
@@ -93,12 +90,10 @@ export const refreshToken = async (req: Request, res: Response) => {
   const refreshToken = req.cookies?.['refreshToken']
 
   if (!refreshToken) {
-    return res.status(401).send('Access Denied. No refresh token provided.')
+    return res.status(401).send('Access Denied.')
   }
 
   try {
-    const JWT_SECRET = process.env.JWT_SECRET || 'random'
-
     const decoded = jwt.verify(refreshToken, JWT_SECRET) as JwtPayload
 
     if (!decoded?.id) {
@@ -110,7 +105,9 @@ export const refreshToken = async (req: Request, res: Response) => {
       expiresIn: JWT_ACCESS_EXPIRATION,
     })
 
-    res.header('Authorization', accessToken).send(decoded.user)
+    res
+      .header('Authorization', accessToken)
+      .json({ id: decoded.id, username: decoded.user, token: accessToken })
   } catch (error) {
     let errorMsg = 'Invalid refresh token.'
 

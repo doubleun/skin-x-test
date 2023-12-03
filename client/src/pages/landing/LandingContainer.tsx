@@ -14,14 +14,12 @@ function LandingContainer({ render }: LandingContainerProps) {
   const [page, setPage] = useState<number>(1)
   const [totalPage, setTotalPage] = useState<number | undefined>(1)
   const searchRef = useRef<HTMLInputElement>(null)
-  const didMount = useRef<boolean>(false)
 
   const handleSearchPosts = async () => {
     const search = searchRef.current?.value ?? ''
 
     try {
       setLoading(true)
-      console.log('sortDirection', sortDirection)
       await searchPost(search, sortBy, sortDirection, page).then(
         (searchResults) => {
           setPosts(searchResults?.posts)
@@ -48,12 +46,8 @@ function LandingContainer({ render }: LandingContainerProps) {
     return () => window.removeEventListener('keypress', handleKeyPress)
   }, [sortBy, sortDirection])
 
+  // on development this will run twice
   useEffect(() => {
-    if (!didMount.current) {
-      didMount.current = true
-      return
-    }
-
     handleSearchPosts()
   }, [sortBy, sortDirection, page])
 

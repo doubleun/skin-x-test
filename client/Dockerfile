@@ -7,12 +7,18 @@ WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
+COPY vite.config.ts ./
+COPY index.html ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY tsconfig*.json ./
 
 # Install pnpm globally
 RUN npm install -g pnpm typescript
 
 # Install dependencies
-RUN pnpm install -P
+RUN pnpm install
 
 # Copy the entire application code to the container
 COPY . .
@@ -25,7 +31,7 @@ RUN pnpm build
 FROM nginx:alpine as runner
 
 # Copy the built React app to Nginx's web server directory
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80 for the Nginx server
 EXPOSE 80

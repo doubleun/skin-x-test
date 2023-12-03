@@ -3,6 +3,7 @@ import {
   ChevronRightIcon,
   ChevronsLeftIcon,
 } from 'lucide-react'
+import { v4 as uuidv4 } from 'uuid'
 
 import { clamp, cn } from '@/lib/utils'
 
@@ -68,6 +69,7 @@ function Pagination({
           {pageNumbers.length <= maxPageNumbers
             ? pageNumbers.map((page) => (
                 <PaginationItem
+                  key={uuidv4()}
                   page={page}
                   setPage={setPage}
                   currentPage={currentPage}
@@ -79,6 +81,7 @@ function Pagination({
           {isExceedMax
             ? firstPages.map((page) => (
                 <PaginationItem
+                  key={uuidv4()}
                   page={page}
                   setPage={setPage}
                   currentPage={currentPage}
@@ -96,6 +99,7 @@ function Pagination({
           {isExceedMax
             ? currentPages.map((page) => (
                 <PaginationItem
+                  key={uuidv4()}
                   page={page}
                   setPage={setPage}
                   currentPage={currentPage}
@@ -113,6 +117,7 @@ function Pagination({
           {isExceedMax
             ? lastPages.map((page) => (
                 <PaginationItem
+                  key={uuidv4()}
                   page={page}
                   setPage={setPage}
                   currentPage={currentPage}

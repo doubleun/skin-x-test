@@ -48,7 +48,14 @@ Tag.belongsToMany(Post, {
 
 const app: Express = express()
 
-app.use(cors())
+// NOTE: only for simple setup
+// can handle cors better if using something like NextJS or setup a proper nginx proxy to send api request to the same origin
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:8080', 'http://localhost:5173'],
+  })
+)
 
 // parse http-only cookie for authorization (JWT)
 app.use(cookieParser())
