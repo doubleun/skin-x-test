@@ -7,6 +7,7 @@ interface LoginContainerRenderProps {
   passwordRef: ForwardedRef<HTMLInputElement>
   onSubmitLogin(): void
   loading: boolean
+  isError: boolean
 }
 
 export type LoginContainerProps =

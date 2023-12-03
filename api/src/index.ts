@@ -8,31 +8,18 @@ import userRoutes from '../routes/userRoutes'
 import Post from '../models/Post'
 import Tag from '../models/Tag'
 import postRoutes from '../routes/postRoutes'
-import PostTag from '../models/PostTag'
 
 dotenv.config()
 
-const isProd = process.env.environment === 'production'
-
 // connect sequelize
-if (isProd) {
-  sequelize
-    .sync()
-    .then(() => {
-      console.log('Synced db.')
-    })
-    .catch((err) => {
-      console.log('Failed to sync db: ' + err.message)
-    })
-} else {
-  // in development use `force` true to drop existing tables and re-sync the database
-  // sequelize.sync({ force: true }).then(() => {
-  //   console.log('Drop and re-sync db.')
-  // })
-  sequelize.sync().then(() => {
-    console.log('Sync db.')
+sequelize
+  .sync()
+  .then(() => {
+    console.log('Synced db.')
   })
-}
+  .catch((err) => {
+    console.log('Failed to sync db: ' + err.message)
+  })
 
 Post.belongsToMany(Tag, {
   through: 'Post_Tag',
@@ -48,8 +35,7 @@ Tag.belongsToMany(Post, {
 
 const app: Express = express()
 
-// NOTE: only for simple setup
-// can handle cors better if using something like NextJS or setup a proper nginx proxy to send api request to the same origin
+// can handle cors better if using something like NextJS or setup a nginx proxy to send api request to the same origin
 app.use(
   cors({
     credentials: true,

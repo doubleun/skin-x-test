@@ -76,3 +76,9 @@
 ### Docker-compose
 
 #### Run project with docker-compose (all in one)
+
+- In the root project run:
+
+  ```bash
+  $ docker-compose up -d
+  ```

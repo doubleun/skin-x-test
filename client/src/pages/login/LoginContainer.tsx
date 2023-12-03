@@ -10,6 +10,7 @@ function LoginContainer({ render }: LoginContainerProps) {
   const { setToken } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState(false)
 
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -26,13 +27,18 @@ function LoginContainer({ render }: LoginContainerProps) {
 
     try {
       setLoading(true)
+      setIsError(false)
       const user = await authLogin(username, password)
-      if (!user || !user?.token) return
+      if (!user || !user?.token) {
+        setIsError(true)
+        return
+      }
 
       setToken(user.token)
       navigate('/', { replace: true })
     } catch (e) {
       console.error(e)
+      setIsError(true)
     } finally {
       setLoading(false)
     }
@@ -56,6 +62,7 @@ function LoginContainer({ render }: LoginContainerProps) {
     passwordRef,
     onSubmitLogin: handleSubmitLogin,
     loading,
+    isError,
   })
 }
 

@@ -49,7 +49,6 @@ function Pagination({
 
   return (
     <div className="py-4">
-      {currentPage}
       <nav role="navigation" aria-label="Pagination Navigation">
         <ul className={cn(PaginationTwClass.paginationContainer, className)}>
           <li>

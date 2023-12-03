@@ -9,7 +9,13 @@ import LoginContainer from './LoginContainer'
 function Login() {
   return (
     <LoginContainer
-      render={({ usernameRef, passwordRef, onSubmitLogin, loading }) => (
+      render={({
+        usernameRef,
+        passwordRef,
+        onSubmitLogin,
+        loading,
+        isError,
+      }) => (
         <PageContainer>
           <div className={LoginTwClass.inputContainer}>
             <div className={LoginTwClass.inputCard}>
@@ -19,6 +25,14 @@ function Login() {
               <Input ref={usernameRef} type="text" placeholder="username" />
               <Input ref={passwordRef} type="password" placeholder="password" />
               <Button onClick={onSubmitLogin}>Confirm</Button>
+
+              {isError ? (
+                <div className="flex justify-center">
+                  <p className="text-destructive text-sm">
+                    Invalid username or password
+                  </p>
+                </div>
+              ) : null}
             </div>
             {loading ? (
               <Loader
