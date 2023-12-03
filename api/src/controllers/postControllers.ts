@@ -8,7 +8,7 @@ import {
   handlePagination,
   isValidSortBy,
   isValidSortDirection,
-} from '../utils/post.util'
+} from '../../utils/post.util'
 
 /**
  * POST - create post

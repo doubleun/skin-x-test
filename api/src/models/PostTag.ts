@@ -1,5 +1,5 @@
 import { DataTypes, Deferrable, Model } from 'sequelize'
-import sequelize from '../config/db'
+import sequelize from '../../config/db'
 
 class PostTag extends Model {
   declare post_id: number

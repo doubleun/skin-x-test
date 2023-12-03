@@ -4,10 +4,10 @@ import sequelize from '../config/db'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import userRoutes from '../routes/userRoutes'
-import Post from '../models/Post'
-import Tag from '../models/Tag'
-import postRoutes from '../routes/postRoutes'
+import userRoutes from './routes/userRoutes'
+import Post from './models/Post'
+import Tag from './models/Tag'
+import postRoutes from './routes/postRoutes'
 
 dotenv.config()
 
