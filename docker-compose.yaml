@@ -2,8 +2,12 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:16-alpine
+    # image: postgres:16-alpine
     restart: always
+    build:
+      context: ./api/scripts/db
+      target: db
+      dockerfile: Dockerfile
     ports:
       - 5431:5432
     environment:

@@ -4,6 +4,7 @@ import { Op, QueryTypes, Sequelize } from 'sequelize'
 import Post from '../models/Post'
 import PostTag from '../models/PostTag'
 import Tag from '../models/Tag'
+import { isValidSortBy, isValidSortDirection } from '../utils/post.util'
 
 /**
  * POST - create post
@@ -43,12 +44,22 @@ export const searchPosts = async (req: Request, res: Response) => {
   try {
     const { search = '', sort = 'title', direction = 'ASC' } = req.query
 
-    // if (!search) res.status(500).send('Missing search query')
-
     if (!Post.sequelize) {
       res.status(500).send('Something went wrong with the api server')
       return
     }
+
+    // protect sql injection, check if sortBy and direction is NOT valid
+    if (
+      !isValidSortBy(sort as string) ||
+      !isValidSortDirection(direction as string)
+    ) {
+      res.status(500).send('Something is wrong with the request')
+      return
+    }
+
+    // cleaned order by query
+    const orderByQuery = Post.sequelize.literal(`p."${sort}" ${direction}`).val
 
     // const searchedPosts = await Post.findAll({
     //   attributes: ['id', 'title', 'content', 'postedAt', 'postedBy'],
@@ -97,7 +108,7 @@ export const searchPosts = async (req: Request, res: Response) => {
       GROUP BY
         p.id
       ORDER BY
-        ${Post.sequelize.literal(`p."${sort}" ${direction}`).val};
+        ${orderByQuery};
     `,
       {
         bind: { search_text: `%${search}%` },

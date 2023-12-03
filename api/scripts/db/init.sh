@@ -1,0 +1,1 @@
+psql -U skinx -d db -a -f /app/scripts/db/dump.sql

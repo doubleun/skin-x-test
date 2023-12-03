@@ -33,6 +33,11 @@
       $ docker run --name skin_x-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=skinx -e POSTGRES_DB=db -p 5431:5432 -d postgres:16-alpine
       ```
 
+  - Then you can connect to the database using this command (be sure to have `psql` installed):
+    ```bash
+      $ psql postgresql://skinx:password@localhost:5431/db
+    ```
+
 - Run client and api server (concurrently):
 
   ```bash
@@ -61,6 +66,12 @@
     ```
   - **NOTE: If want to seed the db again, drop all tables first then re-run the seed command**
   - (Optional) replace json data or file in `/api/seeders`
+- (Optional) Dump the SQL for Docker
+  - if you need to dump new SQL data to use with Docker mak sure to have postgresql 16 installed, then run (password is `password`):
+    ```bash
+    $ pg_dump db > dump.sql -h localhost -p 5431 -U skinx
+    ```
+  -
 
 ### Docker-compose
 
