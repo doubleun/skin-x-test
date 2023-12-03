@@ -1,14 +1,13 @@
 import { Request, Response } from 'express'
-import { Op, QueryTypes, Sequelize } from 'sequelize'
+import { QueryTypes } from 'sequelize'
 
 import Post, { SearchedPosts } from '../models/Post'
-import PostTag from '../models/PostTag'
 import Tag from '../models/Tag'
 import {
   handlePagination,
   isValidSortBy,
   isValidSortDirection,
-} from '../../utils/post.util'
+} from '../utils/post.util'
 
 /**
  * POST - create post
