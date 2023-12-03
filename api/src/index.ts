@@ -33,7 +33,7 @@ Tag.belongsToMany(Post, {
   foreignKey: 'tag_id',
 })
 
-const app: Express = express()
+export const app: Express = express()
 
 // can handle cors better if using something like NextJS or setup a nginx proxy to send api request to the same origin
 app.use(
